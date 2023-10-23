@@ -848,6 +848,7 @@ impl SpircTask {
         // First see if this update was intended for us.
         let device_id = &self.ident;
         let ident = update.ident();
+
         if ident == device_id
             || (!update.recipient.is_empty() && !update.recipient.contains(device_id))
         {
@@ -880,7 +881,6 @@ impl SpircTask {
 
         match update.typ() {
             MessageType::kMessageTypeHello => self.notify(Some(ident)),
-
             MessageType::kMessageTypeLoad => {
                 self.handle_load(update.state.get_or_default())?;
                 self.notify(None)
@@ -1382,7 +1382,6 @@ impl SpircTask {
         // has_shuffle/repeat seem to always be true in these replace msgs,
         // but to replicate the behaviour of the Android client we have to
         // ignore false values.
-        let state = state;
         if state.repeat() {
             self.state.set_repeat(true);
         }
